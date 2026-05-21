@@ -23,14 +23,14 @@ net = nn.Sequential(nn.Linear(2, 1)) # 2 和 1 是输入和输出的数量
 net[0].weight.data.normal_(0, 1)
 net[0].bias.data.fill_(0)
 
-loss = nn.MSELoss() # loss 是 MSELoss 的实例，实现了 __call__ 方法
+loss = nn.MSELoss() # loss 是 MSELoss 的实例，实现了 __call__ 方法。等价于 loss = nn.MSELoss(reduction='mean')
 
 trainer = torch.optim.SGD(net.parameters(), lr=0.03)
 
 num_epochs = 3
 for epoch in range(num_epochs):
-    for X, y in data_iter:
-        l = loss(net(X), y) # 将 X 传入 net 得到预测值，再计算与真实值 y 的 loss
+    for X, y in data_iter: # X, y 是一个 batch
+        l = loss(net(X), y) # 将 X 传入 net 得到预测值，再计算与真实值 y 的 loss。
         # 三步曲
         trainer.zero_grad() # 清零梯度
         l.backward() # 反向传播
